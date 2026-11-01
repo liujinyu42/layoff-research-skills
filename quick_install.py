@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Install v0.9.0 research skills and an isolated Python runtime."""
+"""Install v1.4.0 research skills and an isolated Python runtime."""
 from pathlib import Path,PurePosixPath
 import argparse,hashlib,json,os,shutil,subprocess,sys,tempfile,urllib.request,venv,zipfile
-VERSION='0.9.0'
-ARCHIVE_SHA256='d1ddc272f5616d7c356916488980131aa212aa9c04cb75bcc84f08f12505644a'
-ARCHIVE_URL='https://raw.githubusercontent.com/liujinyu42/layoff-research-skills/5ca51420fa54a544c357390c3c19df7253899326/layoff-research-skills-v0.9.0-github.zip'
+VERSION='1.4.0'
+ARCHIVE_SHA256='5ab8c9ed3a1233774366ec5fb48db4c3213d69197cc318640ce0ffe706eb30d2'
+ARCHIVE_URL='https://raw.githubusercontent.com/liujinyu42/layoff-research-skills/main/layoff-research-skills-v1.4.0-github.zip'
 SKILLS=('layoff-announcement-tracker','listed-filing-extractor')
 
 def unpack(archive,dest):
@@ -50,7 +50,7 @@ def main(argv=None):
   folder=Path(scratch);archive=folder/'source.zip'
   if a.archive:shutil.copyfile(Path(a.archive).expanduser(),archive)
   else:
-   request=urllib.request.Request(ARCHIVE_URL,headers={'User-Agent':'LayoffResearchInstaller/0.9.0'})
+   request=urllib.request.Request(ARCHIVE_URL,headers={'User-Agent':'LayoffResearchInstaller/1.4.0'})
    with urllib.request.urlopen(request,timeout=60)as response,archive.open('wb')as f:shutil.copyfileobj(response,f)
   root=unpack(archive,folder/'source')
   if a.skip_dependencies:python=Path(sys.executable)
@@ -66,10 +66,10 @@ def main(argv=None):
    add_runtime(dest/n,python)
    subprocess.run([str(python),str(dest/n/'scripts/research.py'),'--help'],stdout=subprocess.DEVNULL,check=True)
   # Copy the long first-use prompt out of the temporary source extraction.
-  home.mkdir(parents=True,exist_ok=True);shutil.copyfile(root/'prompts/first-run.zh-CN.md',home/'first-run.zh-CN.md')
+  home.mkdir(parents=True,exist_ok=True);shutil.copyfile(root/'prompts/first-run.en.md',home/'first-run.en.md')
   (home/'installation.json').write_text(json.dumps({**plan,'python':str(python),'status':'installed'},ensure_ascii=False,indent=2)+'\n')
  print('Installed both skills. Refresh skills/reopen your host, then use the README first-run prompt. No collection has started.',flush=True)
- print('Full prompt: '+str(home/'first-run.zh-CN.md'))
+ print('Full prompt: '+str(home/'first-run.en.md'))
  return 0
 if __name__=='__main__':
  try:raise SystemExit(main())
