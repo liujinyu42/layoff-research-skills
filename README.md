@@ -1,5 +1,218 @@
 # Layoff Research Skills
 
+**Turn layoff announcements and listed-company disclosures into traceable, reusable research data.**
+
+This project provides two installable AI skills: one tracks layoff announcements and company context; the other collects listed-company disclosures on human resources, AI/technology, and financial performance. Built-in definitions guide collection, coding, source review, and Excel delivery.
+
+**v0.9.0** · **Python 3.10+** · **WorkBuddy / WorkBuddy AI / Codex**
+
+[English](#layoff-research-skills) · [中文说明](#chinese-guide) · [Download source](layoff-research-skills-v0.9.0-github.zip) · [Installer](quick_install.py) · [Quick start](#quick-start)
+
+## What the two skills do
+
+| Skill | Research task | Main content | Output unit |
+| --- | --- | --- | --- |
+| `layoff-announcement-tracker` | Track when companies announce layoffs and how they explain them | Original announcements, counts/percentages, stated reasons, M&A, leadership changes, company history/size, products, business models, affected groups | One row per independent layoff plan |
+| `listed-filing-extractor` | Maintain a panel of listed-company annual disclosures | HR and layoffs, AI/technology, financial and executive compensation disclosures | One row per company and fiscal year |
+
+Each Excel workbook contains one worksheet named **“结果” (Results)**, with values, missing/pending statuses, and supporting evidence. Templates, field dictionaries, source-manifest templates, and coding definitions are bundled. Users do not need the author's original spreadsheets or chat history.
+
+### 1. Layoff announcements and company context
+
+The default announcement window is **January 1, 2020–September 30, 2026** and can be changed explicitly. Public, private, and delisted companies can be included.
+
+- Discover candidates through layoff trackers, company websites, SEC 8-K/6-K filings, exchange announcements, and reliable news; trace the original announcement.
+- Preserve announcement dates, effective periods, count/percentage bounds, approximations, and denominators.
+- Retain the company's stated reasons and **eight nullable 0/1 reason codes**: AI, new technology, financial conditions, operations, M&A, strategic restructuring, IPO targets, and leadership transition. Multiple reasons can apply.
+- Record M&A and leadership context, founding year, company history, size at the event date, products/services, business model, and disclosed affected groups.
+- Link multiple reports about the same plan; retain distinct IDs for independent layoff rounds.
+
+Default output: `1_layoff_announcements.xlsx`, with **51 research fields** plus identity, status, and evidence columns.
+
+### 2. Listed-company annual disclosures
+
+The default period is **FY2019–FY2025** and can be changed explicitly. A stable `company_id` connects announcement and annual data; company-years without annual reports remain visible.
+
+| Category | Examples |
+| --- | --- |
+| HR and layoffs | Headcount and workforce composition, training/development, talent competition, labor risks, retention/turnover, workforce restructuring narratives, related costs |
+| AI and technology | Products, operational integration, adoption, risks, investment/operating expenditure, R&D, capitalized software, explicitly disclosed AI-specific amounts |
+| Financial performance | Revenue, operating income, net income, assets/liabilities, restructuring charges, compensation costs, related executive compensation disclosures |
+
+The schema contains **142 research fields**: 88 original variables, 48 binary disclosure companions, and six explicit amount fields. Source text, numerical values, and disclosure codes are stored separately.
+
+Default output: `2_listed_company_filings.xlsx`.
+
+## Sources and collection paths
+
+| Source | Current implementation |
+| --- | --- |
+| SEC EDGAR | Built-in historical-index, document, and candidate-extraction workflow; annual reports/proxies retain their fiscal-year assignments; 8-K/6-K event candidates are preserved |
+| Company websites and reliable news | The executing agent discovers links through its host's search/browser tools, then imports, snapshots, and reviews the documents |
+| layoffs.fyi and other layoff trackers | Candidate and original-link discovery; actual coverage must be reported |
+| HKEX, LSE, ASX, KRX, Xetra | Discover official exchange/issuer reports, then import HTML/TXT/PDF through a source manifest |
+| 40-F attachments and scanned reports | Import the relevant official reports; scanned images require actual OCR/visual review |
+
+Discovery outside the native SEC path depends on the host's available tools. This version does not implement private, site-wide APIs for every exchange or tracker. Inaccessible pages, missing reports, and pending image reviews remain explicit gaps.
+
+## One-command installation
+
+Open a terminal on the computer where you want to install the skills. You need **Python 3.10+** and access to GitHub and Python package sources.
+
+### macOS / Linux
+
+**WorkBuddy:**
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/liujinyu42/layoff-research-skills/main/quick_install.py -o quick_install.py && python3 quick_install.py --target workbuddy
+```
+
+**WorkBuddy AI:**
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/liujinyu42/layoff-research-skills/main/quick_install.py -o quick_install.py && python3 quick_install.py --target workbuddy-ai
+```
+
+**Codex:**
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/liujinyu42/layoff-research-skills/main/quick_install.py -o quick_install.py && python3 quick_install.py --target codex
+```
+
+### Windows PowerShell
+
+This example installs to WorkBuddy. Change `--target` for another host:
+
+```powershell
+Invoke-WebRequest 'https://raw.githubusercontent.com/liujinyu42/layoff-research-skills/main/quick_install.py' -OutFile quick_install.py
+py -3 quick_install.py --target workbuddy
+```
+
+The script handles Windows paths. Validation was performed on macOS; Windows host execution has not been tested.
+
+### What the installer does
+
+1. Downloads the v0.9.0 source ZIP from a fixed repository commit and verifies its SHA-256 before extraction.
+2. Creates a project-specific Python virtual environment and installs dependencies separately from system Python.
+3. Installs the two self-contained skills and binds their command entry points to that environment.
+4. Checks both command entry points and saves the full first-use prompt.
+
+| `--target` | Default skill directory |
+| --- | --- |
+| `workbuddy` | `~/.workbuddy/skills/` |
+| `workbuddy-ai` | `~/.workbuddy-ai/skills/` |
+| `codex` | `~/.codex/skills/` |
+
+Refresh your host's skill list or reopen the host after installation. **Installation deploys the tools; collection starts when you explicitly invoke a skill.**
+
+### Preview, upgrade, or customize installation
+
+```bash
+# After downloading the script, preview the plan without installing
+python3 quick_install.py --target workbuddy --dry-run
+
+# Back up and replace the two named skills; stop active tasks first
+python3 quick_install.py --target workbuddy --force
+
+# Choose the skill directory and persistent runtime directory
+python3 quick_install.py --dest ./my-skills --home ./research-runtime
+```
+
+Upgrades back up the two existing skill directories and preserve other skills. Keep the `--home` directory after installation because it contains the runtime.
+
+### Manual installation
+
+Download and extract the [complete source ZIP](layoff-research-skills-v0.9.0-github.zip), enter the extracted directory, and run these commands in your own Python virtual environment:
+
+```bash
+python -m pip install -r requirements.txt
+python install.py --target workbuddy
+```
+
+Use that same dependency-equipped Python environment for subsequent collection commands. The source archive includes a full Chinese first-use prompt at `prompts/first-run.zh-CN.md`; an English prompt is provided below.
+
+## Quick start
+
+### 1. Prepare the sample roster
+
+Include at least `company_id` and `company`. Add CIKs for US filers and exchange information for other markets. Preserve historical identities for delisted firms.
+
+```csv
+company_id,company,cik,ticker,exchange,listing_status
+apple,Apple Inc.,0000320193,AAPL,NASDAQ,listed
+```
+
+This row illustrates the input format. Supply your own company/event roster to define the collection scope.
+
+### 2. Send this prompt to your AI assistant
+
+Replace the bracketed paths. If you need only one skill, keep the corresponding task:
+
+```text
+Use layoff-announcement-tracker and listed-filing-extractor.
+Company roster: [absolute path to company CSV].
+Announcement window: 2020-01-01 through 2026-09-30.
+Annual filings: FY2019–FY2025 for the sample's listed/delisted companies.
+Event workspace: [absolute path A]. Filing workspace: [absolute path B].
+Output directory: [absolute path].
+SEC contact: [actual ASCII contact name and email I authorize for this run].
+
+Collect all fields using the skills' bundled templates and definitions.
+Actually discover and read sources, complete first and second source reviews,
+and repair identified issues. Reuse valid snapshots and judgments.
+
+Deliver 1_layoff_announcements.xlsx and 2_listed_company_filings.xlsx,
+each containing one worksheet named 结果. Use one row per independent layoff
+plan for announcements and one row per company fiscal year for filings.
+Preserve unresolved values as null with reasons. Mark inspection outputs
+PARTIAL and list actual gaps. Mark COMPLETE only after source coverage and
+substantive review pass; dispatching tasks is not completed review.
+```
+
+### 3. Update existing work
+
+Provide the same workspaces on subsequent runs. The skills can reuse valid snapshots and judgments, continuing with new sources, revised text, or invalidated decisions. Scheduled execution requires separate authorization through your host; installation starts no background tasks.
+
+## Data and review conventions
+
+- **1, 0, and null have different meanings.** A binary 1 indicates qualifying disclosure; 0 requires actual complete-scope review for absence. Unavailable, unread, or unresolved information remains null. Binary codes do not replace amounts, counts, or rates.
+- **Stated reasons are distinct from economic causality.** An AI mention does not establish that AI caused the layoffs, and the coding does not assume AI is an “excuse.”
+- **Amounts use base currency units and retain raw values/scales.** For example, 2088 million becomes 2,088,000,000. Currency, period, totals/components, and charges/payments/balances require separate checks.
+- **Evidence remains traceable.** Snapshots, text, hashes, field quotations, offsets/page mappings, rationales, and review statuses are retained.
+- **Known errors block export.** Examples include contradictory text/code pairs, damaged sources, invalid dates, and stale second-review records. Explicit PARTIAL export supports inspection of unresolved coverage gaps.
+
+`COMPLETE` describes completion under the registered scope and definitions. Two readings by the same model are self-review, not independent human reliability. Researchers should assess results against the original sources.
+
+## Validation, version, and project files
+
+v0.9.0 passed **20 offline tests**, with checks of two-skill independent installation, a synthetic SEC workflow, two-page PDF text/page mapping, and both single-sheet templates. The installation entry point was tested locally; GitHub/Python package network access depends on the runtime environment. No complete real-world research sample is bundled.
+
+The complete source ZIP contains:
+
+```text
+layoff-research-skills/
+├── skills/          # Two skills, templates, dictionaries, and definitions
+├── shared/          # Sources, judgments, audits, and export
+├── engine/          # Bundled SEC candidate parser
+├── prompts/         # Full first-use prompt
+├── tests/           # Offline regression tests
+├── docs/            # Validation scope
+├── install.py
+├── requirements.txt
+├── CHANGELOG.md
+└── LICENSE
+```
+
+The source archive uses the MIT license. The repository homepage and installer are updated separately; the source ZIP remains the validated v0.9.0 release.
+
+---
+
+<a id="chinese-guide"></a>
+
+# 中文说明
+
+[Back to English](#layoff-research-skills)
+
 **把裁员公告和上市公司披露，整理成可追溯、可持续更新的研究数据。**
 
 本项目提供两个可安装的 AI skills：一个追踪裁员公告及公司背景，一个采集上市公司的 HR、AI/技术和财务披露。数据采集、字段编码、来源核验和 Excel 导出都按内置定义执行，方便研究者重复使用。
