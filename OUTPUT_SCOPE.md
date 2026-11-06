@@ -1,10 +1,12 @@
-# Fixed output scope v1.4.0
+# Fixed output scope v1.5.0
 
 Each Excel has exactly one Results worksheet. All presentation is English, with native evidence preserved in a separate canonical archive. No original dataset or chat memory is required. Historical sample counts are background, not run quotas. All company types may be inputs; actual available public disclosures determine coverage.
 
+The filing workbook has 41 business fields and 47 base columns. The announcement workbook has 43 business fields and 49 base columns. Measurement contracts govern how the collected values can be interpreted.
+
 ## listed-filing-extractor
 
-42 business fields and 48 base columns.
+41 business fields and 47 base columns.
 
 | Field | Meaning | Type |
 |---|---|---|
@@ -35,7 +37,6 @@ Each Excel has exactly one Results worksheet. All presentation is English, with 
 | ai_investment_disclosure | AI investment disclosure | text |
 | ai_investment_disclosure_disclosed | AI investment disclosure disclosed (0/1/null) | binary |
 | ai_investment_amount | Explicit AI investment amount | number |
-| ai_opex_amount | Explicit AI operating expense | number |
 | tech_opex_amount | Reported technology operating expense | number |
 | rd_expense | Explicit research and development expense | number |
 | capitalized_software | Capitalized software development disclosure | text |
