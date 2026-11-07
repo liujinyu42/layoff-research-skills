@@ -1,4 +1,4 @@
-# Research Skills
+# OS Submission
 
 Two self-contained research skills for structured public-source collection.
 
