@@ -1,3 +1,20 @@
+# v2.3.1 — 2026-11-07
+
+Discovery and candidate reconciliation release.
+
+- Adds the runtime 2.3.1 discovery workflow: `discovery-plan`, `discovery-status`, `discovery-import`, and `candidate-review-prepare`. The planner builds broad per-company, per-year query families from verified roster aliases; actual search captures are preserved in the workspace and deduplicated into `discovery/inbox.csv`.
+- Requires an English `event_candidate_review.csv` ledger covering every supplied lead and discovered candidate, with dispositions `included`, `merged`, `excluded`, or `unresolved`, a surviving plan ID, positive linkage evidence for merges, and a cited `evidence_url`. A header-only ledger is required when no candidates exist.
+- Adds `verification_source_url` to the announcement output. The 43 business fields are unchanged; base columns move from 49 to 50.
+- Accepts regulatory notices and credible attributed original reporting as event evidence when no issuer announcement exists. Blocked candidates require alternate public reporting or an unresolved disposition; inaccessible leads remain visible as coverage gaps.
+- Requires evidence of an announced or implemented involuntary workforce reduction for workbook admission. Hiring pauses, automation forecasts, generic restructuring, and stand-alone voluntary offers remain in the candidate sidecar.
+- Runs tracker seeding first. Search-log imports take `search_scope=event_lookup` or `window_sweep`; a known-event lookup no longer certifies annual coverage.
+- Adds discovery and candidate audit outputs (`qa/candidate-review.json`, `review/fallback-tasks.json`). Content changes invalidate source-bound review receipts.
+- Replaces `delivery_quality.py` and `semantic_receipts.py` with `delivery_review.py`; adds `discovery.py`, `candidate_review.py`, and `event_sources.py`; removes the bundled `reproducible-extraction.md` guidance in favour of the contract references.
+- Filing extractor runtime 2.2.2 adds `filing_amount_followup.csv` targeted supplementary checks for issuers whose core amount is blank across the requested years, requires a source-bound second review for positive AI compensation, internal integration, and adoption decisions, and bundles the shared `layoffcore` and `layoff-hcm-tracker` vendor engine inside the skill.
+- Existing 1.5.7-rc4 workspaces are not migrated silently. Start a fresh workspace and re-audit previous exports instead of relabelling them.
+
+Verified: both skills compile; the 6 bundled discovery tests and 10 event-review tests pass; `init` and `discovery-plan` smoke tests complete. No live semantic rerun or new complete collection is claimed.
+
 # Proposal-scope build
 
 The filing extractor uses schema and output contract 1.5.1. Technology and infrastructure operating expenses remain in scope. This build removes the separate AI operating expense amount and keeps the existing AI investment fields. Start a fresh filing workspace.

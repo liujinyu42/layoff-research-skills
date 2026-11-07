@@ -1,8 +1,10 @@
-# Fixed output scope v1.5.0
+# Fixed output scope v2.3.1
 
 Each Excel has exactly one Results worksheet. All presentation is English, with native evidence preserved in a separate canonical archive. No original dataset or chat memory is required. Historical sample counts are background, not run quotas. All company types may be inputs; actual available public disclosures determine coverage.
 
-The filing workbook has 41 business fields and 47 base columns. The announcement workbook has 43 business fields and 49 base columns. Measurement contracts govern how the collected values can be interpreted.
+The filing workbook has 41 business fields and 47 base columns. The announcement workbook has 43 business fields and 50 base columns. Measurement contracts govern how the collected values can be interpreted.
+
+The additional announcement columns are provenance and status fields, not new business variables: `verification_source_url`, `delivery_status`, `field_status_json`, and `evidence_json`, alongside the three row identifiers `plan_id`, `company_id`, and `company`. Every included event requires a cited `verification_source_url`.
 
 ## listed-filing-extractor
 
