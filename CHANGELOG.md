@@ -1,3 +1,20 @@
+# v2.8.6 — 2026-11-18
+
+Tracker-only release: `layoff-announcement-tracker` moves to the v2.8.x line (schema 1.6.0); `listed-filing-extractor` is unchanged at runtime 2.2.2. The 50-column announcement output contract (43 business fields) is unchanged. Per-release engineering notes are bundled with the skill (`CHANGELOG-v2.8.*.md`).
+
+- Rebuilds publisher-address resolution: aggregator redirect links and publisher sitemaps are parsed year-month pairwise, including robots-declared indexes, so articles resolve from Google News-style pointers instead of nearly always failing.
+- Incremental ingest no longer deactivates the registered source corpus when a partial manifest is written; sources outside the manifest keep their active status.
+- Clause-scoped multi-employer sentences: counts and shares are read from the clause carrying each employer's own action, with approximation qualifiers preserved on counts and shares alike.
+- Announcement date and publication date are separate facts with `announcement_date_precision` (`day` / `month` / `relative` / `unknown`); no day is manufactured from page metadata.
+- The second review re-reads bound evidence, recomputes values under current scope rules, verifies dates at recorded precision, and returns `confirm` / `revise` / `abstain` in risk order.
+- Headcounts keep information versions (initial report, confirmed figure, implementation update) with as-of anchors; HTML inline tags stay inline so evidence offsets map to readable sentences.
+- Real-estate reductions are separate events, mixed layoff/furlough populations record their basis, and retrospective sources are itemised with `source_timing=retrospective`.
+- Adds regional closure, consultation and earnings-reduction discovery query families (16 to 22 queries per alias/year) and grouped missing-date/count/share follow-ups generated from existing plans and decisions.
+- On resume, `candidate-review-prepare` reopens legacy automated exclusions caused by a missing plan or an inconclusive text rule; back up the workspace before the first migration.
+- Existing pre-2.8 workspaces are not migrated silently. Create a fresh workspace and re-read original sources; old code 0 is never imported as absence.
+
+Verified: the bundled tracker regression suite passes; the v2.8.4 validation reports 299 tests run, 298 passed, one skipped. No live semantic rerun or new complete collection is claimed.
+
 # v2.3.1 — 2026-11-07
 
 - Adds the runtime 2.3.1 discovery workflow: `discovery-plan`, `discovery-status`, `discovery-import`, and `candidate-review-prepare`, with preserved search captures and a deduplicated discovery inbox.

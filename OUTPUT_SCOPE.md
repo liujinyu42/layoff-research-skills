@@ -1,4 +1,4 @@
-# Fixed output scope v2.3.1
+# Fixed output scope v2.8.6
 
 Each workbook contains exactly one worksheet named Results. All displayed content is English. Native evidence is preserved separately.
 

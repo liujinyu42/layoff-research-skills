@@ -3,7 +3,7 @@
 Copy the text below and replace the bracketed inputs.
 
 ```text
-Use the installed v2.3.1 event tracker and the v2.2.2 annual-disclosure extractor.
+Use the installed layoff-announcement-tracker v2.8.6 and the listed-filing-extractor v2.2.2.
 
 Companies: [legal company names, country or website if ambiguous].
 Aliases: [verified historical or common names, separated by semicolons, or "none"].
