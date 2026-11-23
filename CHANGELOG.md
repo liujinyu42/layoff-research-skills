@@ -1,3 +1,9 @@
+# v3.0.3 — 2026-11-23
+
+- Bundles the v3.0.3 layoff tracker with nine research variables and four event identification columns.
+- Bundles the filing extractor with its v3.0.2 schema covering 21 research variables and three identification columns.
+- Both workflows deliver an English Results worksheet and supporting evidence files.
+
 # v2.8.6 — 2026-11-18
 
 Tracker-only release: `layoff-announcement-tracker` moves to the v2.8.x line (schema 1.6.0); `listed-filing-extractor` is unchanged at runtime 2.2.2. The 50-column announcement output contract (43 business fields) is unchanged. Per-release engineering notes are bundled with the skill (`CHANGELOG-v2.8.*.md`).
