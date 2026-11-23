@@ -1,7 +1,29 @@
-# Fixed output scope v2.8.6
+# Output scope for v3.0.3
 
-Each workbook contains exactly one worksheet named Results. All displayed content is English. Native evidence is preserved separately.
+Each workbook has one English worksheet named `Results`. Supporting files retain audit records, source URLs and original-language evidence.
 
-The annual workbook has 41 business fields and 47 base columns. The event workbook has 43 business fields and 50 base columns. Measurement contracts govern how the collected values can be interpreted.
+## Layoff announcements
 
-Exact field names, definitions, and order are defined by the schemas and blank templates bundled with the installed skills. Provenance and status fields include `verification_source_url`, `delivery_status`, `field_status_json`, and `evidence_json`, alongside stable row identifiers.
+`1_layoff_announcements.xlsx` has one row per verified event or distinct plan. The 13 columns contain four identifiers (plan ID, company ID, company name and announcement date) and nine research variables:
+
+- Company-stated layoff reason
+- M&A activity
+- Leadership transition
+- Company history
+- Firm size
+- Founding year
+- Products or services
+- Business model
+- Known parties affected
+
+## Listed-company filings
+
+`2_listed_company_filings.xlsx` has one row per company and fiscal year. The default window is FY2019–FY2025. The 24 base columns include company ID, company name, fiscal year and 21 research fields:
+
+| Category | Fields |
+|---|---|
+| HR | Workforce size, training and development cost amount, labor and talent risk, competition and hiring risk, MD&A HR discussion, restructuring and cost-saving narrative |
+| AI and technology | AI products and initiatives, AI integration, AI adoption, AI risks, AI investment narrative, AI investment amount, technology and infrastructure operating expense, R&D expense, capitalized software development cost amount |
+| Financial and compensation | Revenue, operating income, restructuring charges, total employee compensation expense, AI-linked compensation disclosure, AI-linked executive compensation amount |
+
+The bundled schemas and templates define exact field names and order. See the [first-use prompts](FIRST_USE_PROMPT.md) and [installation package](two-skills-v3.0.3-install.zip).
